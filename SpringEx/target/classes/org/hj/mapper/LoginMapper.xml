@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  													
+  <mapper namespace="org.hj.mapper.LoginMapper"> <!-- SQL문장이 있는 DB!! --> 
+  	
+  	<insert id="memreg"><!--  memreg구현부  id값이 memreg로 동일함. 스프링이니까 가능한 것-->
+  		insert into member (id, password, name, birthday, gender)
+  		values(#{id}, #{password}, #{name}, sysdate(), "f");
+  	</insert> <!-- DB에 insert됨 -->
+  	
+  	<select id="login" resultType="org.hj.model.LoginVO"> <!--resultType="org.hj.model.LoginVO" : DB에서 받은 결과를 담는 곳  -->
+  		select id, password
+  		from member
+  		where id=#{id} and password=#{password}
+  	</select>
+  	
+  	
+  	<select id="memlist" resultType="org.hj.model.LoginVO"> <!-- coding3 -->
+  		select *
+  		from member;
+  	</select>
+  
+  
+  	<!-- 3월 30일(목요일) 실습 풀이 -->
+  	<!-- * resources 폴더 헷갈리지 말기! 
+  			frontend 작업 공간(css,img,js) 위치 : src -> main -> webapp -> resources)
+  			DB연결(맵퍼 xml)위치 : src/main/resources -> org -> hj -> mapper				-->
+  	<select id="memdetail" resultType="org.hj.model.LoginVO">
+  		select * from member where id= #{id}; <!-- #{id}: 사용자가 선택한 아이디 -->
+  	
+  	</select>
+  	
+  	
+  	<update id="memberModify"> <!-- update에는 resulttype이 없음! -->
+  		update member
+		set name = #{name},
+   			password = #{password},
+  			phone = #{phone} <!-- ,넣으면 안됨! -->
+			where id=#{id} <!-- (조건절 지정 안하면 모든 행의 열이 바뀌니까 꼭 써줘야함!) -->
+		;
+  	
+  	</update>
+  
+  
+  
+	<delete id="memberRemove">  <!-- Attribute "id" is required and must be specified for element type "delete". -->
+			delete from member where id = #{id}
+			;
+	
+	</delete>  
+  
+  
+  
+  
+  
+  </mapper>
